@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skema Insentif Project - Timeline</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #e74c3c, #f39c12, #2ecc71, #3498db);
+        }
+        
+        .header-content h1 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header-content p {
+            font-size: 16px;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .btn-primary {
+            background: #e74c3c;
+            color: white;
+            box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
+        }
+        
+        .btn-primary:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4);
+        }
+        
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        /* Timeline Styles */
+        .timeline-container {
+            background: white;
+            padding: 30px;
+            border-radius: 0 0 15px 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+        }
+        
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin-bottom: 50px;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #e0e0e0;
+            z-index: 1;
+        }
+        
+        .timeline-progress {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            z-index: 2;
+            transition: width 0.5s ease;
+        }
+        
+        .timeline-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 3;
+            flex: 1;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 4;
+        }
+        
+        .step-icon i {
+            font-size: 32px;
+            color: #7f8c8d;
+            transition: all 0.3s ease;
+        }
+        
+        .step-label {
+            font-weight: 600;
+            color: #7f8c8d;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e0e0e0;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-step.active .step-icon {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        }
+        
+        .timeline-step.active .step-icon i {
+            color: #3498db;
+        }
+        
+        .timeline-step.active .step-label {
+            color: #2c3e50;
+            font-weight: 700;
+        }
+        
+        .timeline-step.active .step-number {
+            background: #3498db;
+        }
+        
+        .timeline-step.completed .step-icon {
+            background: #2ecc71;
+        }
+        
+        .timeline-step.completed .step-icon i {
+            color: white;
+        }
+        
+        .timeline-step.completed .step-number {
+            background: #2ecc71;
+        }
+        
+        /* Content Styles */
+        .content-container {
+            position: relative;
+            min-height: 500px;
+        }
+        
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .content-section.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .section-title i {
+            background: #3498db;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .memo-card {
+            background: #f8f9fa;
+            border-left: 5px solid #3498db;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+        
+        .memo-header {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        .memo-item {
+            margin-bottom: 10px;
+        }
+        
+        .memo-item strong {
+            color: #2c3e50;
+            min-width: 120px;
+            display: inline-block;
+        }
+        
+        .diagram-container {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 25px 0;
+            overflow-x: auto;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e9ecef;
+        }
+        
+        /* Diagram Styles */
+        .flow-diagram {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .flow-step {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .flow-step:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+        }
+        
+        .step-number-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+        
+        .step-description {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .step-arrow {
+            font-size: 24px;
+            color: #3498db;
+            margin: 0 10px;
+            flex-shrink: 0;
+        }
+        
+        .flow-connector {
+            display: flex;
+            justify-content: center;
+            margin: 5px 0;
+        }
+        
+        .connector-line {
+            width: 2px;
+            height: 20px;
+            background: #3498db;
+        }
+        
+        .skema-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .skema-card {
+            padding: 25px;
+            border-radius: 10px;
+            color: white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .skema-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .skema-merah {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        }
+        
+        .skema-kuning {
+            background: linear-gradient(135deg, #f39c12 0%, #d35400 100%);
+        }
+        
+        .skema-hijau {
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+        
+        .skema-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .skema-icon {
+            font-size: 28px;
+        }
+        
+        .skema-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .skema-value {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin: 15px 0;
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 25px 0;
+            justify-content: center;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .color-sales { background-color: #e3f2fd; border: 2px solid #2196F3; }
+        .color-merchandiser { background-color: #f3e5f5; border: 2px solid #9C27B0; }
+        .color-kontraktor { background-color: #e8f5e8; border: 2px solid #4CAF50; }
+        .color-finance-so { background-color: #fff3e0; border: 2px solid #FF9800; }
+        .color-gudang { background-color: #fce4ec; border: 2px solid #E91E63; }
+        .color-finance-invoice { background-color: #e0f2f1; border: 2px solid #009688; }
+        .color-pelunasan { background-color: #c8e6c9; border: 2px solid #388E3C; }
+        
+        .info-box {
+            background: #e8f4fd;
+            border-left: 5px solid #2196F3;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .info-icon {
+            font-size: 24px;
+            color: #2196F3;
+        }
+        
+        .prosedur-list {
+            list-style-type: none;
+            margin: 20px 0;
+        }
+        
+        .prosedur-list li {
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .prosedur-list li:before {
+            content: "•";
+            color: #3498db;
+            font-size: 24px;
+            position: absolute;
+            left: 0;
+            top: -5px;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            background: #3498db;
+            color: white;
+        }
+        
+        .nav-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .nav-btn:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        @media (max-width: 768px) {
+            .timeline {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 30px;
+            }
+            
+            .timeline::before {
+                display: none;
+            }
+            
+            .timeline-progress {
+                display: none;
+            }
+            
+            .timeline-step {
+                flex-direction: row;
+                width: 100%;
+                gap: 20px;
+            }
+            
+            .step-icon {
+                width: 60px;
+                height: 60px;
+                margin-bottom: 0;
+            }
+            
+            .step-icon i {
+                font-size: 24px;
+            }
+            
+            .skema-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .memo-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .flow-step {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .step-arrow {
+                transform: rotate(90deg);
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="content-to-print">
+        <header>
+            <div class="header-content">
+                <h1><i class="fas fa-chart-line"></i> Skema Insentif Project</h1>
+                <p>Grand Mitra Bangunan - Sistem Penghargaan Berbasis Kinerja</p>
+                
+                <div class="actions">
+                    <button class="btn btn-secondary" onclick="window.print()">
+                        <i class="fas fa-print"></i> Print
+                    </button>
+                    <button class="btn btn-primary" id="download-pdf">
+                        <i class="fas fa-file-pdf"></i> Download PDF
+                    </button>
+                </div>
+            </div>
+        </header>
+        
+        <div class="timeline-container">
+            <!-- Timeline Navigation -->
+            <div class="timeline">
+                <div class="timeline-progress" id="timeline-progress"></div>
+                
+                <div class="timeline-step active" data-step="1">
+                    <div class="step-icon">
+                        <i class="fas fa-file-alt"></i>
+                        <div class="step-number">1</div>
+                    </div>
+                    <div class="step-label">Memo Internal</div>
+                </div>
+                
+                <div class="timeline-step" data-step="2">
+                    <div class="step-icon">
+                        <i class="fas fa-sitemap"></i>
+                        <div class="step-number">2</div>
+                    </div>
+                    <div class="step-label">Diagram Alur</div>
+                </div>
+                
+                <div class="timeline-step" data-step="3">
+                    <div class="step-icon">
+                        <i class="fas fa-chart-pie"></i>
+                        <div class="step-number">3</div>
+                    </div>
+                    <div class="step-label">Skema Insentif</div>
+                </div>
+                
+                <div class="timeline-step" data-step="4">
+                    <div class="step-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                        <div class="step-number">4</div>
+                    </div>
+                    <div class="step-label">Prosedur Klaim</div>
+                </div>
+            </div>
+            
+            <!-- Content Sections -->
+            <div class="content-container">
+                <!-- Step 1: Memo Internal -->
+                <div class="content-section active" id="step-1">
+                    <h2 class="section-title"><i class="fas fa-file-alt"></i> Memo Internal</h2>
+                    
+                    <div class="memo-card">
+                        <div class="memo-header">
+                            <div class="memo-item"><strong>Kepada:</strong> Seluruh Departemen Terkait</div>
+                            <div class="memo-item"><strong>Dari:</strong> Manajemen</div>
+                            <div class="memo-item"><strong>Tanggal:</strong> 1 Juni 2024</div>
+                            <div class="memo-item"><strong>Perihal:</strong> Skema Insentif Project dan SOP Pelaksanaannya</div>
+                        </div>
+                        
+                        <h3 style="color: #2c3e50; margin: 20px 0 15px 0;">Menimbang</h3>
+                        <ul class="prosedur-list">
+                            <li>Perlunya peningkatan kinerja penjualan dan efisiensi operasional dalam menangani project.</li>
+                            <li>Pentingnya memberikan apresiasi yang proporsional berdasarkan kontribusi dan margin project yang dicapai.</li>
+                            <li>Perlunya standar prosedur operasional (SOP) yang jelas untuk memastikan transparansi dan akuntabilitas dalam pemberian insentif.</li>
+                        </ul>
+                        
+                        <h3 style="color: #2c3e50; margin: 20px 0 15px 0;">Memutuskan</h3>
+                        <ul class="prosedur-list">
+                            <li>Menetapkan skema insentif project berdasarkan margin yang dicapai.</li>
+                            <li>Menetapkan SOP dan alur kerja untuk pelaksanaan skema insentif ini.</li>
+                        </ul>
+                        
+                        <h3 style="color: #2c3e50; margin: 20px 0 15px 0;">Maksud & Tujuan</h3>
+                        <ul class="prosedur-list">
+                            <li>Mendorong tim penjualan untuk mencapai margin yang optimal.</li>
+                            <li>Memastikan setiap tahapan project terlaksana dengan tertib administrasi dan transparan.</li>
+                            <li>Meningkatkan motivasi tim penjualan dalam mencapai target margin.</li>
+                            <li>Memastikan akurasi dan validasi data penjualan melalui aplikasi yang terintegrasi.</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="navigation-buttons">
+                        <button class="nav-btn" disabled>
+                            <i class="fas fa-chevron-left"></i> Sebelumnya
+                        </button>
+                        <button class="nav-btn next-btn">
+                            Selanjutnya <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Diagram Alur -->
+                <div class="content-section" id="step-2">
+                    <h2 class="section-title"><i class="fas fa-sitemap"></i> Diagram Alur Kerja</h2>
+                    
+                    <div class="info-box">
+                        <i class="fas fa-info-circle info-icon"></i>
+                        <div>
+                            <strong>Kode RfqFe:</strong> Kode numerik pada dokumen penawaran (RFQ) yang menunjukkan besaran insentif yang akan diterima sales, dengan perhitungan berdasarkan margin project dan skema yang berlaku.
+                        </div>
+                    </div>
+                    
+                    <!-- Diagram Alur Kerja -->
+                    <div class="flow-diagram">
+                        <!-- Step 1 -->
+                        <div class="flow-step" style="background-color: #e3f2fd; border-left: 5px solid #2196F3;">
+                            <div class="step-number-circle">1</div>
+                            <div class="step-content">
+                                <div class="step-title">SALES - Buat RFQ</div>
+                                <div class="step-description">Membuat RFQ di aplikasi https://gmbpik.web.app/ dan mencetak dengan Kode RfqFe</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flow-connector">
+                            <div class="connector-line"></div>
+                        </div>
+                        
+                        <!-- Step 2 -->
+                        <div class="flow-step" style="background-color: #f3e5f5; border-left: 5px solid #9C27B0;">
+                            <div class="step-number-circle">2</div>
+                            <div class="step-content">
+                                <div class="step-title">MERCHANDISER - Validasi</div>
+                                <div class="step-description">Memvalidasi dan menyetujui RFQ</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flow-connector">
+                            <div class="connector-line"></div>
+                        </div>
+                        
+                        <!-- Step 3 -->
+                        <div class="flow-step" style="background-color: #e8f5e8; border-left: 5px solid #4CAF50;">
+                            <div class="step-number-circle">3</div>
+                            <div class="step-content">
+                                <div class="step-title">KONTRAKTOR - Terbitkan PO</div>
+                                <div class="step-description">Menerbitkan Purchase Order berdasarkan RFQ</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flow-connector">
+                            <div class="connector-line"></div>
+                        </div>
+                        
+                        <!-- Step 4 -->
+                        <div class="flow-step" style="background-color: #fff3e0; border-left: 5px solid #FF9800;">
+                            <div class="step-number-circle">4</div>
+                            <div class="step-content">
+                                <div class="step-title">FINANCE - Terbitkan SO</div>
+                                <div class="step-description">Menerbitkan Sales Order berdasarkan PO</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flow-connector">
+                            <div class="connector-line"></div>
+                        </div>
+                        
+                        <!-- Step 5 -->
+                        <div class="flow-step" style="background-color: #fce4ec; border-left: 5px solid #E91E63;">
+                            <div class="step-number-circle">5</div>
+                            <div class="step-content">
+                                <div class="step-title">GUDANG - Pengiriman</div>
+                                <div class="step-description">Mengirim barang dengan Surat Jalan dan mendapatkan tanda tangan</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flow-connector">
+                            <div class="connector-line"></div>
+                        </div>
+                        
+                        <!-- Step 6 -->
+                        <div class="flow-step" style="background-color: #e0f2f1; border-left: 5px solid #009688;">
+                            <div class="step-number-circle">6</div>
+                            <div class="step-content">
+                                <div class="step-title">FINANCE - Terbitkan Invoice</div>
+                                <div class="step-description">Menerbitkan Invoice & Faktur Pajak berdasarkan Surat Jalan yang ditandatangani</div>
+                            </div>
+                        </div>
+                        
+                        <div class="flow-connector">
+                            <div class="connector-line"></div>
+                        </div>
+                        
+                        <!-- Step 7 -->
+                        <div class="flow-step" style="background-color: #c8e6c9; border-left: 5px solid #388E3C;">
+                            <div class="step-number-circle">7</div>
+                            <div class="step-content">
+                                <div class="step-title">PELUNASAN - Proses Insentif</div>
+                                <div class="step-description">Konfirmasi pembayaran lunas dan proses insentif berdasarkan Kode RfqFe</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="legend">
+                        <div class="legend-item">
+                            <div class="legend-color color-sales"></div>
+                            <span>SALES</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color color-merchandiser"></div>
+                            <span>MERCHANDISER</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color color-kontraktor"></div>
+                            <span>KONTRAKTOR</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color color-finance-so"></div>
+                            <span>FINANCE (SO)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color color-gudang"></div>
+                            <span>GUDANG</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color color-finance-invoice"></div>
+                            <span>FINANCE (INVOICE)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color color-pelunasan"></div>
+                            <span>PELUNASAN</span>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation-buttons">
+                        <button class="nav-btn prev-btn">
+                            <i class="fas fa-chevron-left"></i> Sebelumnya
+                        </button>
+                        <button class="nav-btn next-btn">
+                            Selanjutnya <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Skema Insentif -->
+                <div class="content-section" id="step-3">
+                    <h2 class="section-title"><i class="fas fa-chart-pie"></i> Skema Insentif</h2>
+                    
+                    <div class="skema-container">
+                        <div class="skema-card skema-merah">
+                            <div class="skema-header">
+                                <i class="fas fa-exclamation-circle skema-icon"></i>
+                                <div class="skema-title">Merah</div>
+                            </div>
+                            <div class="skema-desc">
+                                <p>Level: <strong>3</strong></p>
+                            </div>
+                            <div class="skema-value">Grand Total × 0.3%</div>
+                            <p>Insentif diberikan untuk project dengan margin ketat yang memerlukan effort lebih dalam negosiasi.</p>
+                        </div>
+                        
+                        <div class="skema-card skema-kuning">
+                            <div class="skema-header">
+                                <i class="fas fa-adjust skema-icon"></i>
+                                <div class="skema-title">Kuning</div>
+                            </div>
+                            <div class="skema-desc">
+                                <p>Level: <strong>2</strong></p>
+                            </div>
+                            <div class="skema-value">Grand Total × 0.6%</div>
+                            <p>Insentif untuk project dengan margin standar yang mencapai target perusahaan.</p>
+                        </div>
+                        
+                        <div class="skema-card skema-hijau">
+                            <div class="skema-header">
+                                <i class="fas fa-check-circle skema-icon"></i>
+                                <div class="skema-title">Hijau</div>
+                            </div>
+                            <div class="skema-desc">
+                                <p>Level: <strong>1</strong></p>
+                            </div>
+                            <div class="skema-value">Grand Total × 1.0%</div>
+                            <p>Insentif premium untuk project dengan margin tinggi yang memberikan kontribusi signifikan.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="navigation-buttons">
+                        <button class="nav-btn prev-btn">
+                            <i class="fas fa-chevron-left"></i> Sebelumnya
+                        </button>
+                        <button class="nav-btn next-btn">
+                            Selanjutnya <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 4: Prosedur Klaim -->
+                <div class="content-section" id="step-4">
+                    <h2 class="section-title"><i class="fas fa-clipboard-list"></i> Prosedur Klaim Insentif</h2>
+                    
+                    <div class="memo-card">
+                        <h3 style="color: #2c3e50; margin-bottom: 15px;">Pemantauan Berkelanjutan</h3>
+                        <ul class="prosedur-list">
+                            <li>Sales wajib memantau seluruh progres dokumen melalui sistem</li>
+                            <li>Status RFQ dan penerbitan PO oleh kontraktor</li>
+                            <li>Penerbitan Sales Order dan pengiriman barang</li>
+                            <li>Tanda terima Surat Jalan dan penerbitan Invoice</li>
+                            <li>Status pembayaran hingga pelunasan</li>
+                        </ul>
+                        
+                        <h3 style="color: #2c3e50; margin: 25px 0 15px 0;">Klaim Insentif</h3>
+                        <ul class="prosedur-list">
+                            <li>Setelah invoice lunas, sales dapat mengajukan klaim insentif</li>
+                            <li>Lampirkan dokumen RFQ dengan kode RfqFe</li>
+                            <li>Copy PO kontraktor dan Sales Order</li>
+                            <li>Surat Jalan yang telah ditandatangani</li>
+                            <li>Bukti pelunasan invoice</li>
+                        </ul>
+                        
+                        <h3 style="color: #2c3e50; margin: 25px 0 15px 0;">Verifikasi dan Pembayaran</h3>
+                        <ul class="prosedur-list">
+                            <li>Bagian keuangan memverifikasi kelengkapan dokumen</li>
+                            <li>Hitung insentif berdasarkan Kode RfqFe dan realisasi pembayaran</li>
+                            <li>Pembayaran insentif maksimal 14 hari kerja setelah invoice lunas</li>
+                            <li>Insentif diberikan secara proporsional sesuai realisasi pembayaran</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="navigation-buttons">
+                        <button class="nav-btn prev-btn">
+                            <i class="fas fa-chevron-left"></i> Sebelumnya
+                        </button>
+                        <button class="nav-btn" disabled>
+                            Selanjutnya <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <footer>
+                <p>Dokumen ini berlaku sejak 1 Juni 2024 | Grand Mitra Bangunan</p>
+                <p>PIK2, Jalan MH. Thamrin Center Avenue No.10, Banten, Kec. Kosambi, Kabupaten Tangerang, Banten 15213</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Timeline Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const timelineSteps = document.querySelectorAll('.timeline-step');
+            const contentSections = document.querySelectorAll('.content-section');
+            const progressBar = document.getElementById('timeline-progress');
+            const nextButtons = document.querySelectorAll('.next-btn');
+            const prevButtons = document.querySelectorAll('.prev-btn');
+            
+            let currentStep = 1;
+            const totalSteps = timelineSteps.length;
+            
+            // Initialize progress bar
+            updateProgressBar();
+            
+            // Timeline step click event
+            timelineSteps.forEach(step => {
+                step.addEventListener('click', function() {
+                    const stepNumber = parseInt(this.getAttribute('data-step'));
+                    navigateToStep(stepNumber);
+                });
+            });
+            
+            // Next button event
+            nextButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (currentStep < totalSteps) {
+                        navigateToStep(currentStep + 1);
+                    }
+                });
+            });
+            
+            // Previous button event
+            prevButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    if (currentStep > 1) {
+                        navigateToStep(currentStep - 1);
+                    }
+                });
+            });
+            
+            function navigateToStep(stepNumber) {
+                // Update current step
+                currentStep = stepNumber;
+                
+                // Update timeline steps
+                timelineSteps.forEach(step => {
+                    const stepNum = parseInt(step.getAttribute('data-step'));
+                    
+                    step.classList.remove('active', 'completed');
+                    
+                    if (stepNum < currentStep) {
+                        step.classList.add('completed');
+                    } else if (stepNum === currentStep) {
+                        step.classList.add('active');
+                    }
+                });
+                
+                // Update content sections
+                contentSections.forEach(section => {
+                    section.classList.remove('active');
+                });
+                
+                document.getElementById(`step-${currentStep}`).classList.add('active');
+                
+                // Update progress bar
+                updateProgressBar();
+            }
+            
+            function updateProgressBar() {
+                const progressPercentage = ((currentStep - 1) / (totalSteps - 1)) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+            }
+            
+            // PDF Download Functionality
+            document.getElementById('download-pdf').addEventListener('click', function() {
+                const element = document.getElementById('content-to-print');
+                const options = {
+                    margin: [10, 10, 10, 10],
+                    filename: 'Skema_Insentif_Project.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2, useCORS: true },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                
+                html2pdf().set(options).from(element).save();
+            });
+        });
+    </script>
+</body>
+</html>
